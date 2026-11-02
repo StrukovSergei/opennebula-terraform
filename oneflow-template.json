@@ -1,0 +1,44 @@
+{
+  "TEMPLATE": {
+    "BODY": {
+      "name": "Web-DB-Stack",
+      "description": "OpenNebula Exam: HAProxy LB and scalable Nginx web tier",
+      "deployment": "straight",
+      "ready_status_gate": true,
+      "roles": [
+        {
+          "name": "LB",
+          "type": "vm",
+          "template_id": 2,
+          "cardinality": 1,
+          "min_vms": 1,
+          "max_vms": 1,
+          "parents": [],
+          "elasticity_policies": [],
+          "scheduled_policies": []
+        },
+        {
+          "name": "Web",
+          "type": "vm",
+          "template_id": 1,
+          "cardinality": 1,
+          "min_vms": 1,
+          "max_vms": 2,
+          "parents": [
+            "LB"
+          ],
+          "elasticity_policies": [
+            {
+              "expression": "CPU > 50",
+              "type": "CHANGE",
+              "adjust": 1,
+              "period_number": 2,
+              "period": 10
+            }
+          ],
+          "scheduled_policies": []
+        }
+      ]
+    }
+  }
+}
